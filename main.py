@@ -1,16 +1,24 @@
-# This is a sample Python script.
+from pptx import Presentation
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+prs = Presentation("C:/Users/j2017/OneDrive/School/pysc/Lectures_powerpoint/Class_2_Lecture_2_Part1.pptx")
 
+# text_runs will be populated with a list of strings,
+# one for each text run in presentation
+text_runs = []
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+for slide in prs.slides:
+    isFirst = True
+    for shape in slide.shapes:
+        if not shape.has_text_frame:
+            continue
+        for paragraph in shape.text_frame.paragraphs:
+            if len(paragraph.text) > 0:
+                if isFirst:
+                    text_runs.append("* " + paragraph.text)
+                    isFirst = False
+                    print(str(len(paragraph.text)) + " " + "* " + paragraph.text)
+                    break
 
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+                text_runs.append("** " + paragraph.text)
+                print(str(len(paragraph.text)) + " " + "** " + paragraph.text)
+    text_runs.append("\n")
